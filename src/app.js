@@ -1,12 +1,16 @@
 const express = require('express');
+const bodyParser = require('body-parser');
 const app = express();
 const morgan = require('morgan');
+const mongoose = require('mongoose');
 
 // settings
+mongoose.connect('mongodb://localhost/user_pokedex');
 app.set('port', process.env.PORT || 3000)
 
 // middleware
 app.use(morgan('dev'));
+app.use(bodyParser.json());
 app.use(express.urlencoded({extended: false}))
 app.use(express.json());
 
