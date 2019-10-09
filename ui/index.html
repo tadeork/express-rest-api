@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+  <link rel="stylesheet" href="style/normalize.css">
+  <link rel="stylesheet" href="style/skeleton.css">
+
+  <title>Pokedex</title>
+</head>
+
+<body>
+  <!-- Main container -->
+  <div class="container">
+
+    <h1>Pokedex</h1>
+    <div class="get-info-form">
+      <form onsubmit="return formData(event)">
+        <div class="row">
+          <label for="username">Ingrese el nombre del pokemon</label>
+          <input type="text" id="username" required>
+        </div>
+        <button type="submit" onclick="formData">Consultar</button>
+      </form>
+    </div>
+    <div class="main-container" id="pokemon-list"></div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  <script src="src/app.js"></script>
+
+  <script>
+    document.getElementById('username').onkeyup = function() {
+
+    }
+
+    function formData(event) {
+      cleanList();
+      event.preventDefault();
+      let username = document.getElementById('username').value;
+      displayInfo(username);
+      cleanForm();
+    }
+
+    function cleanForm() {
+      document.getElementById('username').value = '';
+    }
+
+    function cleanList() {
+      const list = document.getElementById('pokemon-list');
+      if (list.childNodes.length > 0) {
+        list.removeChild(list.childNodes[0])
+      }
+    }
+
+    function displayInfo(data) {
+      const p = document.createElement('p');
+      const textValue = document.createTextNode(data);
+      p.appendChild(textValue);
+      document.getElementById('pokemon-list').appendChild(p);
+    }
+
+  </script>
+</body>
+
+</html>
