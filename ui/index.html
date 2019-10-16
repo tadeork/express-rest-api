@@ -8,6 +8,7 @@
 
   <link rel="stylesheet" href="style/normalize.css">
   <link rel="stylesheet" href="style/skeleton.css">
+  <link rel="stylesheet" href="style/app-style.css">
 
   <title>Pokedex</title>
 </head>
@@ -24,47 +25,22 @@
           <input type="text" id="username" required>
         </div>
         <button type="submit" onclick="formData">Consultar</button>
+        <div id="error-message">
+            <span id="error-content"></span>
+          </div>
       </form>
+      <button type="button" onclick="getFirstTen()">10</button>
     </div>
-    <div class="main-container" id="pokemon-list"></div>
+    <div class="main-container" id="pokemon-result"></div>
+    <div class="main-container" id="pokemon-images">
+      <ul id="pokemon-list"></ul>
+    </div>
+
   </div>
 
   <!-- Scripts -->
   <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
   <script src="src/app.js"></script>
-
-  <script>
-    document.getElementById('username').onkeyup = function() {
-
-    }
-
-    function formData(event) {
-      cleanList();
-      event.preventDefault();
-      let username = document.getElementById('username').value;
-      displayInfo(username);
-      cleanForm();
-    }
-
-    function cleanForm() {
-      document.getElementById('username').value = '';
-    }
-
-    function cleanList() {
-      const list = document.getElementById('pokemon-list');
-      if (list.childNodes.length > 0) {
-        list.removeChild(list.childNodes[0])
-      }
-    }
-
-    function displayInfo(data) {
-      const p = document.createElement('p');
-      const textValue = document.createTextNode(data);
-      p.appendChild(textValue);
-      document.getElementById('pokemon-list').appendChild(p);
-    }
-
-  </script>
 </body>
 
 </html>
