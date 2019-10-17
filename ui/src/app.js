@@ -1,5 +1,8 @@
 const URL_POKEAPI = "https://pokeapi.co/api/v2/";
 
+// Lista de pokemones consultados
+const requestedPokemons = [];
+
 document.getElementById('username').onkeyup = function() {
 
 }
@@ -40,13 +43,17 @@ function displayInfo(data) {
 }
 
 // obtiene los datos de pokemones
-function getPokemonData(name) {
-  axios.get(URL_POKEAPI + 'pokemon/' + name).then(resp => {
-    displayPokemonFace(resp.data);
-  }).catch(error => {
-    console.error(error);
-    showErrorMessage(error);
-  });
+function getPokemonData(name, index) {
+  document.getElementById('error-message').style.display = "none";
+  if (!requestedPokemons.includes(name)) {
+    axios.get(URL_POKEAPI + 'pokemon/' + name).then(resp => {
+      requestedPokemons.push(resp.data.name);
+      displayPokemonFace(resp.data, index);
+    }).catch(error => {
+      console.error(error);
+      showErrorMessage(error);
+    });
+  }
 }
 
 // despliega el mensaje de error
@@ -58,21 +65,31 @@ function showErrorMessage(error) {
 }
 
 // Crear elementos de lista y muestra el nombre junto a la imagen
-function displayPokemonFace(data) {
+function displayPokemonFace(data, index = 0) {
   const ulElement = document.getElementById('pokemon-list');
   const liElement = document.createElement('li');
-  liElement.innerHTML = data.name.firstToUpperCase();
+  const abilites = document.createElement('ul');
+  data.abilities.map(attack => {
+    const liAbility = document.createElement('li');
+    liAbility.innerHTML = attack.ability.name.firstToUpperCase();
+    abilites.appendChild(liAbility);
+  });
+  liElement.innerHTML = data.name.firstToUpperCase() + ' ' + index;
   const img = document.createElement('img');
   img.src = data.sprites.front_shiny;
   img.title = data.name.firstToUpperCase();
 
   liElement.appendChild(img);
-  ulElement.appendChild(liElement);
+  liElement.appendChild(abilites);
+  ulElement.append(liElement);
 }
 
+let i = 1;
+
 function getFirstTen() {
-  for (let i = 1; i < 11; i++) {
-    getPokemonData(i);
+  const ii = i + 10;
+  for (i; i < ii; i++) {
+    getPokemonData(i, i);
   }
 }
 
