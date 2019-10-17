@@ -6,6 +6,8 @@ document.getElementById('username').onkeyup = function() {
 
 // EJERCICIO Si ya cargó diez pokemones no volver a cargar
 // EJERCICIO Si el que busca no está en la lista agregarlo
+// EJERCICIO Si hay un error ocultarlo
+// EJERCICIO Si hay un error manejarlo con una función
 
 function formData(event) {
   cleanList();
