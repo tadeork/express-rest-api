@@ -1,6 +1,6 @@
 To work with this project it should be installed the following
 
-- Vanilla JavaScript
+- MySQL Server
 - NodeJS
 - NPM
 
