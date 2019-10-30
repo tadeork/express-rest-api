@@ -11,6 +11,7 @@ document.getElementById('username').onkeyup = function() {
 // EJERCICIO Si el que busca no está en la lista agregarlo
 // EJERCICIO Si hay un error ocultarlo
 // EJERCICIO Si hay un error manejarlo con una función
+// TODO agregar contra qué pokemon gana
 
 function formData(event) {
   cleanList();
@@ -48,7 +49,7 @@ function getPokemonData(name, index) {
   if (!requestedPokemons.includes(name)) {
     axios.get(URL_POKEAPI + 'pokemon/' + name).then(resp => {
       requestedPokemons.push(resp.data.name);
-      displayPokemonFace(resp.data, index);
+      displayPokemonInfo(resp.data, index);
     }).catch(error => {
       console.error(error);
       showErrorMessage(error);
@@ -65,23 +66,40 @@ function showErrorMessage(error) {
 }
 
 // Crear elementos de lista y muestra el nombre junto a la imagen
-function displayPokemonFace(data, index = 0) {
-  const ulElement = document.getElementById('pokemon-list');
-  const liElement = document.createElement('li');
-  const abilites = document.createElement('ul');
-  data.abilities.map(attack => {
+function displayPokemonInfo(data, index = 0) {
+  const tableList = document.getElementById('pokemon-list').getElementsByTagName('tbody')[0];
+  const row = tableList.insertRow();
+  
+  const cellID = row.insertCell();
+  const cellName = row.insertCell();
+  const cellImage = row.insertCell();
+  const cellAbilities = row.insertCell();
+  const cellTypes = row.insertCell();
+
+  const abilitiesList = document.createElement('ul');
+
+  data.abilities.reverse().map(attack => {
     const liAbility = document.createElement('li');
     liAbility.innerHTML = attack.ability.name.firstToUpperCase();
-    abilites.appendChild(liAbility);
+    abilitiesList.appendChild(liAbility);
   });
-  liElement.innerHTML = data.name.firstToUpperCase() + ' ' + index;
+  cellAbilities.append(abilitiesList);
+
+  const typesList = document.createElement('ul');
+  data.types.map(types => {
+    const typeLi = document.createElement('li');
+    typeLi.innerHTML = types.type.name.firstToUpperCase();
+    typesList.appendChild(typeLi);
+  });
+  cellTypes.append(typesList);
+
   const img = document.createElement('img');
   img.src = data.sprites.front_shiny;
   img.title = data.name.firstToUpperCase();
-
-  liElement.appendChild(img);
-  liElement.appendChild(abilites);
-  ulElement.append(liElement);
+  cellImage.append(img);
+  cellID.innerHTML = data.id;
+  cellName.innerHTML = data.name.firstToUpperCase();
+  
 }
 
 let i = 1;
